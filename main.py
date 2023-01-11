@@ -112,19 +112,23 @@ def key_board(i):
         key_board(i)
 
 
-
 menu()
 
 try:
     print("Unsorted Array")
     print(data)
-
+    data1 = data
+    data2 = data
     size = len(data)
 
     quicksort(data, 0, size - 1)
 
     print('QuickSort:')
     print(data)
+
+    quicksort_random(data, 0, size - 1)
+
+    mergesort(data)
 
 except:
     print('Something has fucked up :c')
