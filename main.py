@@ -85,15 +85,35 @@ def mergesort(array):
             j += 1
             k += 1
 
-data=[]
-i=0
-try:
-    print("Input numbers:")
-    while i < 12 :
-        data.append(int(input()))
-        i+=1
-except:
-    print("The last input wasn't a number!")
+
+def menu():
+    try:
+        print("Would you like to input data or import from a file? [k/f]")
+        chose = input()
+        if chose == "k":
+            key_board(0)
+    except:
+        print("Wrong! Try again[k/f]")
+        menu()
+
+
+data = []
+
+
+def key_board(i):
+    try:
+
+        print("Input numbers:")
+        while i < 12:
+            data.append(int(input()))
+            i += 1
+    except:
+        print("The last input wasn't a number!")
+        key_board(i)
+
+
+
+menu()
 
 try:
     print("Unsorted Array")
@@ -108,3 +128,4 @@ try:
 
 except:
     print('Something has fucked up :c')
+
