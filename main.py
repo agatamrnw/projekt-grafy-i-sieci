@@ -1,6 +1,20 @@
 import random
 import time
 
+def menu():
+    try:
+        print("Would you like to input data or import from a file? Or you would like data to be auto completed [k/f/a]")
+        choice = input()
+        if choice == "k":
+            key_board(0)
+        elif choice == 'a':
+            autocomplete()
+        else:
+            print("Wrong! Try again[k/f/a]")
+            menu()
+    except:
+        print("Wrong! Try again[k/f/a]")
+        menu()
 def key_board(i):
     try:
 
@@ -101,22 +115,6 @@ def mergesort(array):
             array[k] = m[j]
             j += 1
             k += 1
-
-
-def menu():
-    try:
-        print("Would you like to input data or import from a file? Or you would like data to be auto completed [k/f/a]")
-        choice = input()
-        if choice == "k":
-            key_board(0)
-        elif choice == 'a':
-            autocomplete()
-        else:
-            print("Wrong! Try again[k/f/a]")
-            menu()
-    except:
-        print("Wrong! Try again[k/f/a]")
-        menu()
 
 
 data = []
