@@ -1,4 +1,21 @@
 import random
+import time
+
+def key_board(i):
+    try:
+
+        print("Input numbers:")
+        while i < 1000:
+            data.append(int(input()))
+            i += 1
+    except:
+        print("The last input wasn't a number!")
+        key_board(i)
+
+
+def autocomplete():
+    for i in range(0, 100000):
+        data.append(random.randint(-1000, 1000))
 
 
 def partition_random(a, left_index, right_index):
@@ -88,48 +105,64 @@ def mergesort(array):
 
 def menu():
     try:
-        print("Would you like to input data or import from a file? [k/f]")
-        chose = input()
-        if chose == "k":
+        print("Would you like to input data or import from a file? Or you would like data to be auto completed [k/f/a]")
+        choice = input()
+        if choice == "k":
             key_board(0)
+        elif choice == 'a':
+            autocomplete()
+        else:
+            print("Wrong! Try again[k/f/a]")
+            menu()
     except:
-        print("Wrong! Try again[k/f]")
+        print("Wrong! Try again[k/f/a]")
         menu()
 
 
 data = []
-
-
-def key_board(i):
-    try:
-
-        print("Input numbers:")
-        while i < 12:
-            data.append(int(input()))
-            i += 1
-    except:
-        print("The last input wasn't a number!")
-        key_board(i)
-
-
 menu()
 
 try:
     print("Unsorted Array")
     print(data)
+
     data1 = data
     data2 = data
+
     size = len(data)
 
+    start1 = time.time()
     quicksort(data, 0, size - 1)
+    end1 = time.time()
+    total1 = end1-start1
 
-    print('QuickSort:')
+    print('Sorted data:')
     print(data)
 
-    quicksort_random(data, 0, size - 1)
+    start2 = time.time()
+    quicksort_random(data1, 0, size - 1)
+    end2 = time.time()
+    total2 = end2 - start2
 
-    mergesort(data)
+    start3 = time.time()
+    mergesort(data2)
+    end3 = time.time()
+    total3 = end3-start3
 
+    if total1 < total2 and total1 < total3:
+        print("Quicksort with median pivot is the most effective")
+    elif total2 < total1 and total2 < total3:
+        print("Quicksort with random pivot is the most effective")
+    elif total3 < total1 and total3 < total2:
+        print("Mergesort is the most effective")
+    elif total1 == total2 and total2 == total3:
+        print("All algorithms have the same efficiency")
+    elif total1 == total2:
+        print("Both quicksort algorithms have the same efficiency")
+    elif total1 == total1:
+        print("Quicksort with median pivot and mergesort have the same efficiency")
+    elif total2 == total3:
+        print("Quicksort with random pivot and mergesort have the same efficiency")
 except:
     print('Something has fucked up :c')
 
