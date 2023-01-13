@@ -1,6 +1,7 @@
 import random
 import time
 
+
 def menu():
     try:
         print("Would you like to input data or import from a file? Or you would like data to be auto completed [k/f/a]")
@@ -9,12 +10,16 @@ def menu():
             key_board(0)
         elif choice == 'a':
             autocomplete()
+        elif choice == 'f':
+            readfile()
         else:
-            print("Wrong! Try again[k/f/a]")
+            print("Wrong! Try again [k/f/a]")
             menu()
     except:
         print("Wrong! Try again[k/f/a]")
         menu()
+
+
 def key_board(i):
     try:
 
@@ -28,8 +33,27 @@ def key_board(i):
 
 
 def autocomplete():
-    for i in range(0, 100000):
-        data.append(random.randint(-1000, 1000))
+    for i in range(0, 1000000):
+        data.append(random.randint(-10000, 10000))
+
+
+def readfile():
+    try:
+        print("Enter name of the file:")
+        name = input()
+        f = open(name)
+
+        try:
+            while f.readline():
+                data.append(int(f.readline()))
+            f.close()
+        except:
+            print("An error has occurred!")
+            menu()
+
+    except:
+        print("Wrong name! Try for example name.txt")
+        readfile()
 
 
 def partition_random(a, left_index, right_index):
@@ -147,6 +171,10 @@ try:
     end3 = time.time()
     total3 = end3-start3
 
+    print("Quicksort with median pivot {0} s".format(total1))
+    print("Quicksort with random pivot {0} s".format(total2))
+    print("Mergesort {0} s".format(total3))
+
     if total1 < total2 and total1 < total3:
         print("Quicksort with median pivot is the most effective")
     elif total2 < total1 and total2 < total3:
@@ -163,4 +191,3 @@ try:
         print("Quicksort with random pivot and mergesort have the same efficiency")
 except:
     print('Something has fucked up :c')
-
