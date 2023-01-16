@@ -2,9 +2,9 @@ import random
 import time
 from tkinter import *
 
-
 root = Tk()
 j = 0
+valid = False
 data = []
 root['bg'] = '#FFF4F4'
 root.title('Compare three sorting algorithms')
@@ -36,35 +36,65 @@ btn4 = Button(text='Submit', bg='#D0ADA7', foreground='#241414', command=lambda:
               activebackground='#FFC8AF')
 btn5 = Button(text='Submit', bg='#D0ADA7', foreground='#241414', command=lambda: file_valid(),
               activebackground='#FFC8AF')
-l6 = Label(text="Invalid file's name:", font=("Montserrat", 16),
+l6 = Label(text="Invalid file's name:", font=("Montserrat", 12),
            bg='#FFF2F2', foreground='#241414')
-l7 = Label(text="Invalid data:", font=("Montserrat", 16),
+l7 = Label(text="Invalid data", font=("Montserrat", 16),
            bg='#FFF2F2', foreground='#241414')
+l4 = Label(text="Invalid input", font=("Montserrat", 12),
+                   bg='#FFF2F2', foreground='#241414')
+l8 = Label(text="Wait...", font=("Montserrat", 12),
+           bg='#FFF2F2', foreground='#241414')
+
+btn_back = Button(text='Back', bg='#D0ADA7', foreground='#241414', command=lambda: back(),
+                  activebackground='#FFC8AF')
+lbl = Label(text='')
+lqr = Label(text='')
+lqm = Label(text='')
+lm = Label(text='')
+
+
+def back():
+    l1.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
+    btn1.grid(column=0, row=1, columnspan=1, padx=96, pady=0)
+    btn2.grid(column=1, row=1, columnspan=1, padx=0, pady=0)
+    btn3.grid(column=2, row=1, columnspan=1, padx=96, pady=0)
+    l2.grid_forget()
+    file_check.grid_forget()
+    key_check.grid_forget()
+    btn4.grid_forget()
+    btn5.grid_forget()
+    l4.grid_forget()
+    l5.grid_forget()
+    l6.grid_forget()
+    btn_back.grid_forget()
+    lbl.grid_forget()
+    lqm.grid_forget()
+    lqr.grid_forget()
+    lm.grid_forget()
+    l7.grid_forget()
 
 
 def key():
-    l1.destroy()
-    btn1.destroy()
-    btn2.destroy()
-    btn3.destroy()
+    l1.grid_forget()
+    btn1.grid_forget()
+    btn2.grid_forget()
+    btn3.grid_forget()
     l2.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
     key_check.grid(row=1, column=1)
-    btn4.grid(row=1, column=2)
+    btn4.grid(row=1, column=3, columnspan=3)
+    btn_back.grid(row=1, column=7, columnspan=7, sticky='e')
 
 
 def key_valid():
-
+    global data
     global j
     if key_check.get().isdigit() or (key_check.get()[1:].isdigit() and key_check.get()[0] == '-'):
-
+        l4.grid_forget()
+        data = []
         key_board()
     else:
         key_check.delete(0, 'end')
-
-        l4 = Label(text="Invalid input", font=("Montserrat", 16),
-                   bg='#FFF2F2', foreground='#241414')
-        l4.grid(column=0, row=2)
-        l4.destroy()
+        l4.grid(column=0, row=1)
 
 
 def key_board():
@@ -79,30 +109,39 @@ def key_board():
 
 
 def file():
-    l1.destroy()
-    btn1.destroy()
-    btn2.destroy()
-    btn3.destroy()
+    l1.grid_forget()
+    btn1.grid_forget()
+    btn2.grid_forget()
+    btn3.grid_forget()
     l5.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
     file_check.grid(row=1, column=1)
-    btn5.grid(row=1, column=2)
+    btn5.grid(row=1, column=3, columnspan=3)
+    btn_back.grid(row=1, column=7, columnspan=3, sticky='e')
 
 
 def file_valid():
     try:
+        global data
         name = file_check.get()
         file_check.delete(0, 'end')
         f = open(name)
+        data = []
         readfile(f)
     except:
-        l6.grid(row=3, column=0)
-        valid_flag = False
+        l6.grid(row=1, column=0)
 
 
 def autocomplete():
-    for i in range(0, 1000000):
-        data.append(random.randint(-10000000000, 1000000000))
-    sort()
+    l8.grid(column=0, row=3, columnspan=3, sticky='s')
+    root.after(2000, lambda: auto())
+
+    def auto():
+        global data
+        data = []
+        for i in range(0, 100000):
+            data.append(random.randint(-1000, 1000))
+        sort()
+        l8.grid_forget()
 
 
 def readfile(n):
@@ -112,19 +151,24 @@ def readfile(n):
         n.close()
         sort()
     except:
-        l7.grid(row=3, column=0)
+        l7.grid(column=0, row=0, columnspan=3)
+        file_check.grid_forget()
+        l5.grid_forget()
+        l6.grid_forget()
+        btn5.grid_forget()
+        btn_back.grid(row=1, column=0, columnspan=2, padx=80, pady=20)
 
 
 def sort():
-    btn1.destroy()
-    btn2.destroy()
-    btn3.destroy()
-    l7.destroy()
+    btn1.grid_forget()
+    btn2.grid_forget()
+    btn3.grid_forget()
+    l7.grid_forget()
     data1 = data
     data2 = data
-    file_check.destroy()
+    file_check.grid_forget()
     size = len(data)
-    btn5.destroy()
+    btn5.grid_forget()
     start1 = time.time()
     quicksort(data, 0, size - 1)
     end1 = time.time()
@@ -228,16 +272,21 @@ def mergesort(array):
 
 
 def result(t1, t2, t3):
-    l1.destroy()
-    l2.destroy()
-    btn1.destroy()
-    btn2.destroy()
-    btn3.destroy()
-    l5.destroy()
-    l6.destroy()
-    btn5.destroy()
-    btn4.destroy()
-    key_check.destroy()
+    global lbl
+    global lqr
+    global lqm
+    global lm
+    l1.grid_forget()
+    l2.grid_forget()
+    btn1.grid_forget()
+    btn2.grid_forget()
+    btn3.grid_forget()
+    l5.grid_forget()
+    l6.grid_forget()
+    btn5.grid_forget()
+    btn4.grid_forget()
+    key_check.grid_forget()
+    btn_back.grid(row=4, column=5, columnspan=3, sticky='e')
     qm = "Quicksort with median pivot {0} s".format(t1)
     qr = "Quicksort with random pivot {0} s".format(t2)
     m = "Mergesort {0} s".format(t3)
