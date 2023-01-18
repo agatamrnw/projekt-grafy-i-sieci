@@ -44,7 +44,7 @@ l4 = Label(text="Invalid input", font=("Montserrat", 12),
                    bg='#FFF2F2', foreground='#241414')
 l8 = Label(text="Wait...", font=("Montserrat", 12),
            bg='#FFF2F2', foreground='#241414')
-l9 = Label(text="Print '.' to end", font=("Montserrat", 12),
+l9 = Label(text="Enter '.' to end", font=("Montserrat", 12),
                    bg='#FFF2F2', foreground='#241414')
 l10 = Label(text="Enter an amount:  ", font=("Montserrat", 16),
                  bg='#FFF2F2', foreground='#241414')
@@ -176,7 +176,7 @@ def autocomplete():
         data = []
 
         for i in range(0, num):
-            data.append(random.randint(-1000000, 1000000))
+            data.append(random.randint(-1000, 1000))
         sort()
         l8.grid_forget()
 
