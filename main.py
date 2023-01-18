@@ -4,7 +4,6 @@ from tkinter import *
 
 root = Tk()
 j = 0
-valid = False
 data = []
 root['bg'] = '#FFF4F4'
 root.title('Compare three sorting algorithms')
@@ -17,21 +16,22 @@ l1 = Label(root, text="Would you like to input data or load from file?", font=("
 
 l1.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
 # l1.pack()
-l2 = Label(text="Input numbers please:", font=("Montserrat", 16),
+l2 = Label(text="Enter numbers please:", font=("Montserrat", 16),
            bg='#FFF2F2', foreground='#241414')
 btn1 = Button(root, text='Keyboard', bg='#D0ADA7', foreground='#241414', command=lambda: key(),
               activebackground='#FFC8AF')
 btn1.grid(column=0, row=1, columnspan=1, padx=96, pady=0)
-btn2 = Button(root, text='Autocomplete', bg='#D0ADA7', foreground='#241414', command=lambda: autocomplete(),
+btn2 = Button(root, text='Autocomplete', bg='#D0ADA7', foreground='#241414', command=lambda: auto(),
               activebackground='#FFC8AF')
 btn2.grid(column=1, row=1, columnspan=1, padx=0, pady=0)
 btn3 = Button(root, text='Load from file', bg='#D0ADA7', foreground='#241414', command=lambda: file(),
               activebackground='#FFC8AF')
 btn3.grid(column=2, row=1, columnspan=1, padx=96, pady=0)
-l5 = Label(text="Input file's name:", font=("Montserrat", 16),
+l5 = Label(text="Enter file's name:", font=("Montserrat", 16),
            bg='#FFF2F2', foreground='#241414')
 key_check = Entry(root)
 file_check = Entry(root)
+amount = Entry(root)
 btn4 = Button(text='Submit', bg='#D0ADA7', foreground='#241414', command=lambda: key_valid(),
               activebackground='#FFC8AF')
 btn5 = Button(text='Submit', bg='#D0ADA7', foreground='#241414', command=lambda: file_valid(),
@@ -44,13 +44,30 @@ l4 = Label(text="Invalid input", font=("Montserrat", 12),
                    bg='#FFF2F2', foreground='#241414')
 l8 = Label(text="Wait...", font=("Montserrat", 12),
            bg='#FFF2F2', foreground='#241414')
-
+l9 = Label(text="Print '.' to end", font=("Montserrat", 12),
+                   bg='#FFF2F2', foreground='#241414')
+l10 = Label(text="Enter an amount:  ", font=("Montserrat", 16),
+                 bg='#FFF2F2', foreground='#241414')
 btn_back = Button(text='Back', bg='#D0ADA7', foreground='#241414', command=lambda: back(),
                   activebackground='#FFC8AF')
+btn_auto = Button(text='Submit', bg='#D0ADA7', foreground='#241414', command=lambda: autocomplete(),
+                  activebackground='#FFC8AF')
+
 lbl = Label(text='')
 lqr = Label(text='')
 lqm = Label(text='')
 lm = Label(text='')
+
+
+def auto():
+    l1.grid_forget()
+    btn1.grid_forget()
+    btn2.grid_forget()
+    btn3.grid_forget()
+    l10.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
+    btn_auto.grid(row=1, column=2, columnspan=3)
+    btn_back.grid(row=1, column=7, columnspan=7, sticky='e')
+    amount.grid(row=1, column=1)
 
 
 def back():
@@ -72,25 +89,36 @@ def back():
     lqr.grid_forget()
     lm.grid_forget()
     l7.grid_forget()
+    l9.grid_forget()
+    btn_auto.grid_forget()
+    amount.grid_forget()
+    l10.grid_forget()
+    file_check.grid_forget()
+    key_check.grid_forget()
+    amount.grid_forget()
 
 
 def key():
+    global data
+    data = []
     l1.grid_forget()
     btn1.grid_forget()
     btn2.grid_forget()
     btn3.grid_forget()
     l2.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
     key_check.grid(row=1, column=1)
-    btn4.grid(row=1, column=3, columnspan=3)
+    btn4.grid(row=1, column=2, columnspan=3)
     btn_back.grid(row=1, column=7, columnspan=7, sticky='e')
+    l9.grid(row=2, column=0, columnspan=3)
 
 
 def key_valid():
     global data
     global j
-    if key_check.get().isdigit() or (key_check.get()[1:].isdigit() and key_check.get()[0] == '-'):
+
+    if key_check.get().isdigit() or (key_check.get()[1:].isdigit() and key_check.get()[0] == '-') or key_check.get() == '.':
         l4.grid_forget()
-        data = []
+
         key_board()
     else:
         key_check.delete(0, 'end')
@@ -98,11 +126,10 @@ def key_valid():
 
 
 def key_board():
-    global j
-    if j < 10:
+    n = key_check.get()
+    if n != '.':
         data.append(int(key_check.get()))
         key_check.delete(0, 'end')
-        j += 1
     else:
         key_check.delete(0, 'end')
         sort()
@@ -115,7 +142,7 @@ def file():
     btn3.grid_forget()
     l5.grid(column=0, row=0, columnspan=3, padx=80, pady=60)
     file_check.grid(row=1, column=1)
-    btn5.grid(row=1, column=3, columnspan=3)
+    btn5.grid(row=1, column=2, columnspan=3)
     btn_back.grid(row=1, column=7, columnspan=3, sticky='e')
 
 
@@ -132,14 +159,24 @@ def file_valid():
 
 
 def autocomplete():
-    l8.grid(column=0, row=3, columnspan=3, sticky='s')
-    root.after(2000, lambda: auto())
 
-    def auto():
+    if amount.get().isdigit() and (int(amount.get()) > 0 and int(amount.get()) <= 100000):
+        l8.grid(column=0, row=3, columnspan=3, sticky='s')
+        n = int(amount.get())
+        amount.delete(0, 'end')
+        l4.grid_forget()
+        root.after(1000, lambda: auto_(n))
+    else:
+        amount.delete(0, 'end')
+        l4.grid(column=0, row=1)
+
+    def auto_(num):
+
         global data
         data = []
-        for i in range(0, 100000):
-            data.append(random.randint(-1000, 1000))
+
+        for i in range(0, num):
+            data.append(random.randint(-1000000, 1000000))
         sort()
         l8.grid_forget()
 
@@ -151,12 +188,12 @@ def readfile(n):
         n.close()
         sort()
     except:
-        l7.grid(column=0, row=0, columnspan=3)
+        l7.grid(column=0, row=0, columnspan=2)
         file_check.grid_forget()
         l5.grid_forget()
         l6.grid_forget()
         btn5.grid_forget()
-        btn_back.grid(row=1, column=0, columnspan=2, padx=80, pady=20)
+        btn_back.grid(row=0, column=3, columnspan=2, padx=80, pady=20)
 
 
 def sort():
@@ -164,6 +201,10 @@ def sort():
     btn2.grid_forget()
     btn3.grid_forget()
     l7.grid_forget()
+    l9.grid_forget()
+    btn_auto.grid_forget()
+    amount.grid_forget()
+    l10.grid_forget()
     data1 = data
     data2 = data
     file_check.grid_forget()
@@ -278,6 +319,7 @@ def result(t1, t2, t3):
     global lm
     l1.grid_forget()
     l2.grid_forget()
+    l4.grid_forget()
     btn1.grid_forget()
     btn2.grid_forget()
     btn3.grid_forget()
@@ -341,5 +383,3 @@ def result(t1, t2, t3):
 
 root.mainloop()
 print(data)
-
-
